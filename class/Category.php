@@ -129,7 +129,7 @@ class Category {
                 throw new Exception("Category ID is required.");
             }
 
-            $sql = "SELECT * FROM items WHERE category_id = $category_id limit 5";
+            $sql = "SELECT * FROM items WHERE category_id = $category_id limit 10";
 
             $returned_set = $this->db->query($sql);
 
@@ -158,7 +158,6 @@ class Category {
         }
 
         try {
-
             $sql = "
                 SELECT c.id, c.name, c.description, COUNT(i.id) AS item_count
                 FROM categories c

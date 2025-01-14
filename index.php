@@ -48,8 +48,8 @@ $categories = array_slice($categoryInstance->getCategories(), 0, 3);
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </div>
-                        <button class="carousel-btn left-btn" data-direction="left" data-carousel-id="carousel-<?php echo $category['id']; ?>">&#10094;</button>
-                        <button class="carousel-btn right-btn" data-direction="right" data-carousel-id="carousel-<?php echo $category['id']; ?>">&#10095;</button>
+                        <button class="carousel-btn right-btn" data-direction="right" data-carousel-id="carousel-<?php echo $category['id']; ?>">&#10094;</button>
+                        <button class="carousel-btn left-btn" data-direction="left" data-carousel-id="carousel-<?php echo $category['id']; ?>">&#10095;</button>
                     </div>
                 <?php endforeach; ?>
             </section>
