@@ -44,7 +44,7 @@ class Item {
             $requiredFields = ['id', 'title'];
             foreach ($requiredFields as $field) {
                 if (!isset($data[$field])) {
-                    throw new Exception("Failed to insert item, missing: " . $field);
+                    return ("Failed to insert item, missing: " . $field);
                 }
             }
  
@@ -56,7 +56,7 @@ class Item {
             ");
 
             if (!$query) {
-                throw new Exception("Query preparation failed: " . $this->db->lastErrorMsg());
+                return ("Query preparation failed: " . $this->db->lastErrorMsg());
             }
 
             // Prepare data to be bound to query
@@ -83,10 +83,8 @@ class Item {
             $result = $query->execute();
             $this->db->exec('PRAGMA foreign_keys = ON');
 
-
-
             if (!$result) {
-                throw new Exception("Failed to insert item: " . $this->db->lastErrorMsg());
+                return ("Failed to insert item: " . $this->db->lastErrorMsg());
             }
 
             return $item_id;
@@ -102,19 +100,19 @@ class Item {
         try {            
             // Ensure the item has a valid ID
             if (empty($this->id) && !isset($data['id'])) {
-                throw new Exception("Failed to update item: Missing item ID.");
+                return ("Failed to update item: Missing item ID.");
             }
     
             // Validate that the provided data is an array and not empty
             if (!is_array($data) || empty($data)) {
-                throw new Exception("Failed to update item: Invalid data.");
+                return ("Failed to update item: Invalid data.");
             }
     
             // Validate that all provided fields are valid
             $validFields = ['id', 'name', 'description', 'price', 'brand', 'category_id', 'image_url', 'stock'];
             foreach ($data as $field => $value) {
                 if (!in_array($field, $validFields)) {
-                    throw new Exception("Failed to update item: Invalid field - $field.");
+                    return ("Failed to update item: Invalid field - $field.");
                 }
             }
     
@@ -157,7 +155,7 @@ class Item {
             $this->db->exec('PRAGMA foreign_keys = ON');
 
             if (!$result) {
-                throw new Exception("Failed to Update item: " . $this->db->lastErrorMsg());
+                return ("Failed to Update item: " . $this->db->lastErrorMsg());
             }
 
             return "Updated succesfully";
@@ -180,16 +178,16 @@ class Item {
             // Check if the item exists before attempting to delete it
             $checkQuery = $this->db->query("SELECT 1 FROM items WHERE id = $id LIMIT 1");
 
-            // If the item doesn't exist, throw an exception
+            // If the item doesn't exist, return an exception
             if (!$checkQuery) {
-                throw new Exception("Item with ID $id does not exist.");
+                return ("Item with ID $id does not exist.");
             }
 
             // Prepare the DELETE query
             $deleteQuery = $this->db->query("DELETE FROM items WHERE id = $id");
     
             if (!$deleteQuery) {
-                throw new Exception("Failed to delete item with ID $id.");
+                reutrn ("Failed to delete item with ID $id.");
             }
   
             // Return success message
@@ -255,7 +253,7 @@ class Item {
     
             // If no results were returned
             if (empty($resArr)) {
-                throw new Exception("No results found.");
+                return ("No results found.");
             }
     
             return $resArr;
@@ -279,11 +277,11 @@ class Item {
             $validOrder = ['ASC', 'DESC'];
 
             if (!in_array(strtolower($field), $validFields)) {
-                throw new Exception("Invalid field for sorting.");
+                return ("Invalid field for sorting.");
             }
 
             if (!in_array(strtoupper($order), $validOrder)) {
-                throw new Exception("Invalid order for sorting.");
+                return ("Invalid order for sorting.");
             }
 
             $sql = "SELECT * FROM items ORDER BY $field $order";
@@ -297,7 +295,7 @@ class Item {
     
             // If no results were returned
             if (empty($resArr)) {
-                throw new Exception("No results found.");
+                return ("No results found.");
             }
     
             return $resArr;

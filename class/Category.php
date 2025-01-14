@@ -23,7 +23,7 @@ class Category {
             $requiredFields = ['category_id'];
             foreach ($requiredFields as $field) {
                 if (!isset($data[$field])) {
-                    throw new Exception("Failed to insert category, missing: " . $field);
+                    return ("Failed to insert category, missing: " . $field);
                 }
             }
 
@@ -35,7 +35,7 @@ class Category {
             ");
 
             if (!$query) {
-                throw new Exception("Query preparation failed: " . $this->db->lastErrorMsg());
+                return ("Query preparation failed: " . $this->db->lastErrorMsg());
             }
 
             // Prepare data to be bound to query
@@ -56,7 +56,7 @@ class Category {
             $this->db->exec('PRAGMA foreign_keys = ON');
 
             if (!$result) {
-                throw new Exception("Failed to insert category: " . $this->db->lastErrorMsg());
+                return ("Failed to insert category: " . $this->db->lastErrorMsg());
             }
 
             return $id;
@@ -84,7 +84,7 @@ class Category {
 
             // If no results were returned
             if (empty($resArr)) {
-                throw new Exception("No results found.");
+                return ("No results found.");
             }
 
             return $resArr;
@@ -112,7 +112,7 @@ class Category {
             }
             // If no results were returned
             if (empty($resArr)) {
-                throw new Exception("No results found.");
+                return ("No results found.");
             }
    
             return $resArr;
@@ -177,7 +177,7 @@ class Category {
 
             // If no results were returned
             if (empty($resArr)) {
-            throw new Exception("No results found.");
+            return("No results found.");
             }
 
             return $resArr;
