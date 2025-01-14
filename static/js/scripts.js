@@ -99,6 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const carouselsWrapper = document.querySelector(".carousels-wrapper");
     const carousels = carouselsWrapper.children;
 
+    // Extracting the items
     Array.from(carousels).forEach((carousel, index) => {
         if (!carousel.classList.contains("carousel-container")) {
             console.warn(`Skipping non-carousel element at index ${index}:`, carousel);
@@ -113,39 +114,55 @@ document.addEventListener("DOMContentLoaded", () => {
         // Use the data-carousel-id attribute to select the buttons
         const leftButton = carousel.querySelector(`.left-btn[data-carousel-id="carousel-${categoryId}"]`);
         const rightButton = carousel.querySelector(`.right-btn[data-carousel-id="carousel-${categoryId}"]`);
-
+        
         if (!leftButton || !rightButton) {
             console.warn(`Buttons missing for carousel ID: ${carousel.id}`);
             return;
         }
-
       
         let currentIndex = 0;
         const itemsPerView = 2; // Number of items visible at a time
         const movementOffset = 100 / itemsPerView; // Movement percentage per click
+
         // hide navigation buttons if there are less items than view
         if (totalItems <= itemsPerView) {
             leftButton.style.display = "none";
             rightButton.style.display = "none";
         }
+        
         itemsContainer.style.width = `calc(${Math.min(totalItems, itemsPerView)} * 100% / ${itemsPerView})`;
-
+       
+        /* This function updates the view of the items in each carousel */
         const updateCarousel = () => {
-            const translateXValue = -(currentIndex * movementOffset);
+            var translateXValue = -(currentIndex * movementOffset);     
             itemsContainer.style.transform = `translateX(${translateXValue}%)`;
         };
 
+        // left button
         leftButton.addEventListener("click", () => {
-            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            if (currentIndex > -(totalItems/2)) {
+                currentIndex--;
+            }
+            else 
+            {
+                currentIndex *= -1;
+            }
             updateCarousel();
+
         });
 
+        // Right button
         rightButton.addEventListener("click", () => {
-            currentIndex = (currentIndex + 1) % totalItems;
+            if (currentIndex < (totalItems/2)) {
+                currentIndex++;
+            }
+            else 
+            {
+                currentIndex *= -1;
+            }
             updateCarousel();
+
         });
 
-        updateCarousel();
     });
 });
-
